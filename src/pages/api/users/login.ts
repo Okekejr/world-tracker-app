@@ -1,37 +1,49 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import bcrypt from "bcrypt";
-
-const data = {
-  email: "dylanokeks@icloud.com",
-  password: "$2b$10$eEOzEm2yygFMZYbu4Lx9qeM7/sivf/65Cpt5uhK53wVlFcVOb.0nC",
-};
+import { query } from "../../../../lib/db";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-    const userEmail = req.body.username;
-    const userPassword = req.body.password;
+    const { username, password } = req.body;
 
-    console.log("Begin", userEmail, userPassword);
+    try {
+      const result = await query("SELECT * FROM users WHERE username = $1 ", [
+        username,
+      ]);
 
-    if (userEmail !== data.email) {
-      res.status(500).json({ error: "Incorrect Email" });
-    } else {
-      bcrypt.compare(userPassword, data.password, (err, result) => {
-        if (err) {
-          console.error("Error comparing passwords:", err);
+      if (result.length > 0) {
+        const user = result[0];
+        const storedHashedPassword = user.password;
+        const storedUsername = user.username;
+
+        if (username !== storedUsername) {
+          res.status(500).json({ error: "Incorrect Email" });
         } else {
-          if (!result) {
-            res.status(500).json({ error: "Incorrect Password" });
-          } else {
-            console.log(result);
-            res.status(200).json({ message: "Credentials Match!" });
-          }
+          bcrypt.compare(password, storedHashedPassword, (err, result) => {
+            if (err) {
+              console.error("Error comparing passwords:", err);
+              res.status(500).json({ error: "Internal Server Error" });
+            } else {
+              if (!result) {
+                console.log("Passwords do not match");
+                res.status(500).json({ error: "Incorrect Password" });
+              } else {
+                console.log(result);
+                console.log("Success");
+                res.status(200).json({ message: "Credentials Match!" });
+              }
+            }
+          });
         }
-      });
-      console.log("Success", userEmail, userPassword);
+      } else {
+        res.status(404).json({ error: "User Not Found!" });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: "Error confirming credentials" });
     }
   } else {
     res.status(405).json({ error: "Method Not Allowed" });

@@ -2,7 +2,6 @@ import { FC, useState } from "react";
 import {
   Box,
   Button,
-  Flex,
   FormControl,
   FormLabel,
   HStack,
@@ -17,6 +16,7 @@ import { useAuthForm } from "@/hooks/authForm";
 import { InfoIcon } from "@chakra-ui/icons";
 import { useFeedback } from "@/hooks/feedback";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 interface AuthProps {
   submitUrl: string;
@@ -54,11 +54,13 @@ export const AuthenticationForm: FC<AuthProps> = ({
         }),
       });
 
-      if (postReq.status === 500) {
+      if (!postReq.ok) {
         setIncorrect(true);
-      } else if (postReq.ok) {
+      } else {
         setIncorrect(false);
         clearForm();
+        // Store username in local storage
+        Cookies.set("username", formData.username, { expires: 30 * 60 * 1000 });
         router.push("/worldTracker");
       }
     } catch (error) {
@@ -158,5 +160,78 @@ export const AuthenticationForm: FC<AuthProps> = ({
         </FormControl>
       </form>
     </>
+  );
+};
+
+// HeroForm
+
+interface HeroT {
+  queryUrl: string;
+  username: string | undefined;
+}
+
+export const HeroForm: FC<HeroT> = ({ queryUrl, username }) => {
+  const [country, setCountry] = useState("");
+  const { toasting } = useFeedback();
+
+  const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const countries = event.currentTarget.value;
+    setCountry(countries.toLowerCase());
+  };
+
+  const submitHandler = async (event: React.FormEvent) => {
+    event.preventDefault();
+
+    try {
+      const postReq = await fetch(queryUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: username,
+          country: country,
+        }),
+      });
+      if (postReq.ok) {
+        setCountry("");
+      } else {
+        toasting({
+          _title: "FAILED",
+          desc: "Failed to process request. Please try again later.",
+          status: "error",
+        });
+      }
+    } catch (error) {
+      toasting({
+        _title: "FAILED",
+        desc: "Failed to process request. Please try again later.",
+        status: "error",
+      });
+    }
+  };
+
+  return (
+    <form onSubmit={submitHandler}>
+      <FormControl isRequired>
+        <Stack flexDirection="row" gap={4} w="100%" alignItems="center">
+          <Box>
+            <Input
+              name="country"
+              type="text"
+              placeholder="Enter Country"
+              value={country}
+              onChange={onChangeHandler}
+            />
+          </Box>
+          <Button
+            colorScheme="teal"
+            type="submit"
+            _hover={{ bgColor: "gray.200" }}
+            isDisabled={!country}
+          >
+            Add
+          </Button>
+        </Stack>
+      </FormControl>
+    </form>
   );
 };

@@ -1,3 +1,4 @@
+import { SectionContainer } from "@/components/sectionContainer";
 import { Button, Flex, Heading, Text, VStack } from "@chakra-ui/react";
 import Head from "next/head";
 import Link from "next/link";
@@ -13,45 +14,47 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <VStack width="fit-content" justifySelf="center" margin="auto" gap={6}>
-        <Heading>World Tracker App</Heading>
-        <Text fontSize="1.8rem">
-          <TypeAnimation
-            sequence={[
-              "Welcome 🇺🇸",
-              2000,
-              "Bienvenido 🇲🇽",
-              2000,
-              "Bienvenu 🇫🇷",
-              2000,
-            ]}
-            wrapper="span"
-            speed={5}
-            repeat={Infinity}
-          />
-        </Text>
+      <SectionContainer>
+        <VStack width="fit-content" justifySelf="center" margin="auto" gap={6}>
+          <Heading>World Tracker App</Heading>
+          <Text fontSize="1.8rem">
+            <TypeAnimation
+              sequence={[
+                "Welcome 🇺🇸",
+                2000,
+                "Bienvenido 🇲🇽",
+                2000,
+                "Bienvenu 🇫🇷",
+                2000,
+              ]}
+              wrapper="span"
+              speed={5}
+              repeat={Infinity}
+            />
+          </Text>
 
-        <Flex gap={8}>
-          <Button
-            w="5.5rem"
-            as={Link}
-            href="/login"
-            colorScheme="teal"
-            variant="solid"
-          >
-            Login
-          </Button>
-          <Button
-            w="5.5rem"
-            as={Link}
-            href="/signUp"
-            colorScheme="teal"
-            variant="outline"
-          >
-            Sign Up
-          </Button>
-        </Flex>
-      </VStack>
+          <Flex gap={8}>
+            <Button
+              w="5.5rem"
+              as={Link}
+              href="/login"
+              colorScheme="teal"
+              variant="solid"
+            >
+              Login
+            </Button>
+            <Button
+              w="5.5rem"
+              as={Link}
+              href="/signUp"
+              colorScheme="teal"
+              variant="outline"
+            >
+              Sign Up
+            </Button>
+          </Flex>
+        </VStack>
+      </SectionContainer>
     </>
   );
 }

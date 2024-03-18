@@ -41,3 +41,23 @@ export const Card: FC<CardProps> = ({
     </Flex>
   );
 };
+
+export const HeroCard: FC<FlexProps> = ({ children, ...rest }) => {
+  return (
+    <Flex
+      flexDirection="row"
+      justifyContent="space-between"
+      borderRadius="10px"
+      boxShadow="0 4px 8px #6C4ED9"
+      bgColor="#000"
+      color="#fff"
+      padding="0.3rem"
+      gap={4}
+      p="5px"
+      w={{ md: "fit-content" }}
+      {...rest}
+    >
+      {children}
+    </Flex>
+  );
+};
