@@ -30,6 +30,7 @@ const WorldTrackerPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       const storedUsername = localStorage.getItem("username");
+      console.log(storedUsername);
 
       if (storedUsername) {
         setUserlogged(storedUsername);
