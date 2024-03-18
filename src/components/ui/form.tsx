@@ -16,6 +16,7 @@ import { useAuthForm } from "@/hooks/authForm";
 import { InfoIcon } from "@chakra-ui/icons";
 import { useFeedback } from "@/hooks/feedback";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 interface AuthProps {
   submitUrl: string;
@@ -59,7 +60,7 @@ export const AuthenticationForm: FC<AuthProps> = ({
         setIncorrect(false);
         clearForm();
         // Store username in local storage
-        localStorage.setItem("username", formData.username);
+        Cookies.set("username", formData.username, { expires: 30 * 60 * 1000 });
         router.push("/worldTracker");
       }
     } catch (error) {
@@ -166,7 +167,7 @@ export const AuthenticationForm: FC<AuthProps> = ({
 
 interface HeroT {
   queryUrl: string;
-  username: string | null;
+  username: string | undefined;
 }
 
 export const HeroForm: FC<HeroT> = ({ queryUrl, username }) => {

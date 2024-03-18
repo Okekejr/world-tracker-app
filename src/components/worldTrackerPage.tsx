@@ -7,6 +7,7 @@ import { HeroForm } from "./ui/form";
 import { CardList } from "./core/cardList";
 import { useRouter } from "next/navigation";
 import { HeroButton } from "./ui/button";
+import Cookies from "js-cookie";
 
 interface WorldData {
   name: string;
@@ -21,7 +22,7 @@ const WorldTrackerPage = () => {
     color: "",
     countries: [],
   });
-  const [userlogged, setUserlogged] = useState("");
+  const username = Cookies.get("username");
 
   const logout = () => {
     router.push("/");
@@ -29,19 +30,12 @@ const WorldTrackerPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const storedUsername = localStorage.getItem("username");
-
-      if (storedUsername) {
-        setUserlogged(storedUsername);
-      } else return;
+      if (!username) {
+        router.push("/");
+      }
 
       try {
-        const response = await fetch(
-          `/api/users/getdata?username=${storedUsername}`,
-          {
-            method: "POST",
-          }
-        );
+        const response = await fetch("/api/users/getdata");
         const newData = await response.json();
         setData(newData);
       } catch (error) {
@@ -62,22 +56,26 @@ const WorldTrackerPage = () => {
       pt={{ base: 6, md: 6 }}
       pb={{ sm: 8, md: 12 }}
     >
-      <Flex
-        m="0 auto 2rem auto"
-        alignItems="center"
-        flexDirection={{ base: "column", md: "row" }}
-        gap={4}
-      >
-        <HeroCard alignItems="center">
-          <Text fontSize={{ base: "1rem", md: "1.8rem" }}>
-            Welcome back {data && data.name}
-          </Text>
-          {data && (
-            <HeroForm queryUrl="/api/users/getdata" username={userlogged} />
-          )}
-        </HeroCard>
-        {data && <HeroButton click={logout} _title="Logout" />}
-      </Flex>
+      {data ? (
+        <Flex
+          m="0 auto 2rem auto"
+          alignItems="center"
+          flexDirection={{ base: "column", md: "row" }}
+          gap={4}
+        >
+          <HeroCard alignItems="center">
+            <Text fontSize={{ base: "1rem", md: "1.8rem" }}>
+              Welcome back {data && data.name}
+            </Text>
+            {data && (
+              <HeroForm queryUrl="/api/users/getdata" username={username} />
+            )}
+          </HeroCard>
+          {data && <HeroButton click={logout} _title="Logout" />}
+        </Flex>
+      ) : (
+        <Text>...loading</Text>
+      )}
       {data && <CardList countries={data.countries} />}
       <Map fill={data.color} countries={data.countries} />
     </SectionContainer>

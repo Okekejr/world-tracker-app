@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { query } from "../../../../lib/db";
+import Cookies from "js-cookie";
 
 interface User {
   id: number;
@@ -7,7 +8,7 @@ interface User {
   color: string;
 }
 
-async function getUserId(username: string): Promise<number> {
+async function getUserId(username: string | undefined): Promise<number> {
   try {
     const result = await query("SELECT id FROM users WHERE username = $1;", [
       username,
@@ -66,13 +67,9 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "GET") {
-    const { username } = req.query;
+    const username = req.cookies.username;
 
     try {
-      if (typeof username !== "string") {
-        throw new Error("Username should be a string");
-      }
-
       const userId = await getUserId(username);
       const { countries, color, name } = await checkVisited(userId);
 
@@ -95,7 +92,7 @@ export default async function handler(
       const userId = await getUserId(username);
 
       try {
-        query(
+        await query(
           "INSERT INTO visited_countries (country_code, user_id) VALUES ($1, $2)",
           [countryCode, userId]
         );
