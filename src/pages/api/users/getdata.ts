@@ -66,19 +66,18 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method === "GET") {
-    const username = req.cookies.username;
+  const username = req.cookies.username;
 
-    try {
-      const userId = await getUserId(username);
-      const { countries, color, name } = await checkVisited(userId);
+  try {
+    const userId = await getUserId(username);
+    const { countries, color, name } = await checkVisited(userId);
 
-      res.status(200).json({ countries, color, name });
-    } catch (error) {
-      console.error("Error retrieving user data:", error);
-      res.status(500).json({ error: "Internal Server Error" });
-    }
+    res.status(200).json({ countries, color, name });
+  } catch (error) {
+    console.error("Error retrieving user data:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
+
   if (req.method === "POST") {
     const { username, country } = req.body;
 

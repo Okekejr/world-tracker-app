@@ -15,6 +15,9 @@ interface WorldData {
   countries: string[];
 }
 
+const username = Cookies.get("username");
+console.log(username);
+
 const WorldTrackerPage = () => {
   const router = useRouter();
   const [data, setData] = useState<WorldData>({
@@ -22,7 +25,6 @@ const WorldTrackerPage = () => {
     color: "",
     countries: [],
   });
-  const username = Cookies.get("username");
 
   const logout = () => {
     router.push("/");
