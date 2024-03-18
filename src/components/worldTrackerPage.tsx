@@ -22,7 +22,6 @@ const WorldTrackerPage = () => {
     countries: [],
   });
   const [userlogged, setUserlogged] = useState("");
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const logout = () => {
     router.push("/");
@@ -35,6 +34,11 @@ const WorldTrackerPage = () => {
       if (storedUsername) {
         setUserlogged(storedUsername);
       } else return;
+
+      let apiUrl = "/api";
+      if (process.env.NODE_ENV === "production") {
+        apiUrl = process.env.NEXT_PUBLIC_API_URL || "";
+      }
 
       try {
         const response = await fetch(
