@@ -2,7 +2,6 @@ import { NextApiRequest, NextApiResponse } from "next";
 import bcrypt from "bcrypt";
 import { query } from "../../../../lib/db";
 import { truncateEmail } from "@/util/truncateEmail";
-import fs from "fs";
 
 const saltRound = 10;
 

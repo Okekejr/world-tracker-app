@@ -2,7 +2,6 @@ import { Flex, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { SectionContainer } from "./sectionContainer";
 import { Map } from "./svg/map";
-import Cookies from "js-cookie";
 import { HeroCard } from "./ui/card";
 import { HeroForm } from "./ui/form";
 import { CardList } from "./core/cardList";
@@ -22,7 +21,7 @@ const WorldTrackerPage = () => {
     color: "",
     countries: [],
   });
-  const username = Cookies.get("username");
+  const [userlogged, setUserlogged] = useState("");
 
   const logout = () => {
     router.push("/");
@@ -30,10 +29,16 @@ const WorldTrackerPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!username) return;
+      const storedUsername = localStorage.getItem("username");
+
+      if (storedUsername) {
+        setUserlogged(storedUsername);
+      } else return;
 
       try {
-        const response = await fetch(`/api/users/getdata?username=${username}`);
+        const response = await fetch(
+          `/api/users/getdata?username=${storedUsername}`
+        );
         const newData = await response.json();
         setData(newData);
       } catch (error) {
@@ -61,11 +66,11 @@ const WorldTrackerPage = () => {
         gap={4}
       >
         <HeroCard alignItems="center">
-          <Text fontSize={{ base: "1.2rem", md: "1.8rem" }}>
+          <Text fontSize={{ base: "1rem", md: "1.8rem" }}>
             Welcome back {data && data.name}
           </Text>
           {data && (
-            <HeroForm queryUrl="/api/users/getdata" username={username} />
+            <HeroForm queryUrl="/api/users/getdata" username={userlogged} />
           )}
         </HeroCard>
         {data && <HeroButton click={logout} _title="Logout" />}
