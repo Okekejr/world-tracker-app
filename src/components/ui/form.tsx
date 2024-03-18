@@ -60,7 +60,14 @@ export const AuthenticationForm: FC<AuthProps> = ({
         setIncorrect(false);
         clearForm();
         // Store username in local storage
-        Cookies.set("username", formData.username, { expires: 30 * 60 * 1000 });
+        Cookies.set("username", formData.username, {
+          expires: 30 * 60 * 1000,
+          domain:
+            process.env.NODE_ENV === "development"
+              ? ".localhost"
+              : "https://world-tracker-app.vercel.app",
+        });
+
         router.push("/worldTracker");
       }
     } catch (error) {
