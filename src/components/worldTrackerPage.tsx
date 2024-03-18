@@ -22,6 +22,7 @@ const WorldTrackerPage = () => {
     countries: [],
   });
   const [userlogged, setUserlogged] = useState("");
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const logout = () => {
     router.push("/");
@@ -30,7 +31,6 @@ const WorldTrackerPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       const storedUsername = localStorage.getItem("username");
-      console.log(storedUsername);
 
       if (storedUsername) {
         setUserlogged(storedUsername);
@@ -38,7 +38,7 @@ const WorldTrackerPage = () => {
 
       try {
         const response = await fetch(
-          `/api/users/getdata?username=${storedUsername}`
+          `${apiUrl}/users/getdata?username=${storedUsername}`
         );
         const newData = await response.json();
         setData(newData);
