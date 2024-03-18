@@ -35,14 +35,12 @@ const WorldTrackerPage = () => {
         setUserlogged(storedUsername);
       } else return;
 
-      let apiUrl = "/api";
-      if (process.env.NODE_ENV === "production") {
-        apiUrl = process.env.NEXT_PUBLIC_API_URL || "";
-      }
-
       try {
         const response = await fetch(
-          `${apiUrl}/users/getdata?username=${storedUsername}`
+          `/api/users/getdata?username=${storedUsername}`,
+          {
+            method: "POST",
+          }
         );
         const newData = await response.json();
         setData(newData);
