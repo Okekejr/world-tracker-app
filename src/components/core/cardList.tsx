@@ -4,7 +4,7 @@ import { HeroButton } from "../ui/button";
 import { FlexProps, ListItem, UnorderedList } from "@chakra-ui/react";
 
 interface CountryList extends FlexProps {
-  countries: string[];
+  countries: string[] | undefined;
 }
 
 export const CardList: FC<CountryList> = ({ countries, ...rest }) => {
@@ -22,9 +22,10 @@ export const CardList: FC<CountryList> = ({ countries, ...rest }) => {
 
       {view && (
         <UnorderedList>
-          {countries.map((code, i) => {
-            return <ListItem key={i}>{code}</ListItem>;
-          })}
+          {countries &&
+            countries.map((code, i) => {
+              return <ListItem key={i}>{code}</ListItem>;
+            })}
         </UnorderedList>
       )}
     </HeroCard>

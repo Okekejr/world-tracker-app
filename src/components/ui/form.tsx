@@ -17,6 +17,7 @@ import { InfoIcon } from "@chakra-ui/icons";
 import { useFeedback } from "@/hooks/feedback";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import { useFetching } from "@/hooks/fetching";
 
 interface AuthProps {
   submitUrl: string;
@@ -191,15 +192,17 @@ export const HeroForm: FC<HeroT> = ({ queryUrl, username }) => {
           country: country,
         }),
       });
-      if (postReq.ok) {
-        setCountry("");
-      } else {
+
+      if (!postReq.ok) {
         toasting({
           _title: "FAILED",
           desc: "Failed to process request. Please try again later.",
           status: "error",
         });
       }
+
+      await postReq.json();
+      setCountry("");
     } catch (error) {
       toasting({
         _title: "FAILED",

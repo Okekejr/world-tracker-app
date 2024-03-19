@@ -1,19 +1,32 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 
 interface Props {
-  fill: string;
-  countries: string[];
+  fill: string | undefined;
+  countries: string[] | [] | undefined;
 }
 
 export const Map: FC<Props> = ({ fill, countries }) => {
+  const [refreshToggle, setRefreshToggle] = useState(false);
+
   useEffect(() => {
-    countries.forEach((code) => {
-      const element = document.getElementById(code);
-      if (element) {
-        element.style.fill = fill;
-      }
-    });
-  }, [countries]);
+    const colorMap = () => {
+      countries &&
+        countries.forEach((code) => {
+          const element = document.getElementById(code);
+          if (element && fill) {
+            element.style.fill = fill;
+          }
+        });
+    };
+
+    colorMap();
+
+    const interval = setInterval(() => {
+      setRefreshToggle((prev) => !prev);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [countries, fill, refreshToggle]);
 
   return (
     <svg
