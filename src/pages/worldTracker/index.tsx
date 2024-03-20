@@ -14,13 +14,15 @@ export interface WorldData {
 const WorldTracker: NextPage = () => {
   const router = useRouter();
   const username = Cookies.get("username");
-  const { data } = useFetching(username);
+  const { data, fetchData } = useFetching(username);
   const [refreshToggle, setRefreshToggle] = useState(false);
 
   useEffect(() => {
     if (username === undefined) {
       router.push("/");
     }
+
+    fetchData();
 
     const interval = setInterval(() => {
       setRefreshToggle((prev) => !prev);

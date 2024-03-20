@@ -6,8 +6,6 @@ interface Props {
 }
 
 export const Map: FC<Props> = ({ fill, countries }) => {
-  const [refreshToggle, setRefreshToggle] = useState(false);
-
   useEffect(() => {
     const colorMap = () => {
       countries &&
@@ -20,13 +18,7 @@ export const Map: FC<Props> = ({ fill, countries }) => {
     };
 
     colorMap();
-
-    const interval = setInterval(() => {
-      setRefreshToggle((prev) => !prev);
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [countries, fill, refreshToggle]);
+  }, [countries, fill]);
 
   return (
     <svg
