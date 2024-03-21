@@ -17,7 +17,6 @@ import { InfoIcon } from "@chakra-ui/icons";
 import { useFeedback } from "@/hooks/feedback";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-import { useFetching } from "@/hooks/fetching";
 
 interface AuthProps {
   submitUrl: string;
@@ -54,6 +53,15 @@ export const AuthenticationForm: FC<AuthProps> = ({
           color: formData.color,
         }),
       });
+
+      if (postReq.status === 409) {
+        setIncorrect(true);
+        toasting({
+          _title: "User already exists!!!",
+          desc: "Failed to process request. Login again!.",
+          status: "error",
+        });
+      }
 
       if (!postReq.ok) {
         setIncorrect(true);
