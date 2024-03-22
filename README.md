@@ -1,40 +1,41 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🌍 worldTravelTracker
 
-## Getting Started
+The World Tracker App is a web application that allows users can keep track of countries they have visited visually on a world map. Users can create an account, log in, and access the main tracker app and add countries to their list.
 
-First, run the development server:
+## 🚀 Key Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **User authentication** - Users can register, login, and access protected profile data.
+- **Real-time updates** - Data is regularly updated from external sources.
+- **Profile Data Storage** - Account information stored in secure database.
+- **Account Security** - Passwords hashed and encrypted.
+- **Flexible Layout**: Easily expand or collapse code sections as you work.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📦 Built With
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+- `Next.js` - React framework for server-side rendering and API routes.
+- `Postgres` - Database for user accounts and tracking data.
+- `Bcrypt` - Password hashing function together with salting.
+- `Js cookies` - Creating and storing user session.
+- `TypeScript` - Catching errors and providing fixes.
+- `SVG Map` - For rendering interactive world map components.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## 💡 Improvement
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+- **Optimizations**: Implement caching and performance optimizations.
+- **More data**: Add more visual data representations like charts.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## 📚 What I Learned
 
-## Learn More
+### 🧠 Authentication:
 
-To learn more about Next.js, take a look at the following resources:
+- **Encryption & Hashing**: I found out about bcrypt and salting, safely encrypting and comparing user passwords to confirm authentication.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Sign In and Login Scenarios**: I learnt the various ways to handle errors in my server regards to authentication and how to create a smooth onboarding process and give user feedback.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### 🔍 Managing Cookies and Sessions:
 
-## Deploy on Vercel
+- : Learnt about storage (local and session) and cookies. What they do and when to use them etc.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 🎨 Database PostgresSQL:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- **Creating one to many relationships in postgresSQL**: I learnt how to create tables and joining them to other tables thereby creating relationships.
